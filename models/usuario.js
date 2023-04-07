@@ -35,7 +35,8 @@ const UsuarioSchema = Schema({
 
 //Sobreescribir o crear metodos del Schema
 UsuarioSchema.methods.toJSON = function() {
-  const {__v, password, ...usuario} = this.toObject()
+  const {__v, _id, password, ...usuario} = this.toObject()
+  usuario.uid = _id //Renombrar _id a uid
   return usuario
 }
 

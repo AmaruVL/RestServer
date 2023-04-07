@@ -63,6 +63,7 @@ const usuariosDelete = async(req, res = response) => {
 
   // Borrar de la BD
   const usuario = await Usuario.findByIdAndUpdate(id, {estado:false})
+  // const usuarioAutenticado = req.usuario
   
   res.json({usuario})
 }

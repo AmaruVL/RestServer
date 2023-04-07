@@ -1,8 +1,10 @@
-const {Router} = require('express')
-const { usuariosGet, usuariosPut, usuariosPost, usuariosDelete } = require('../controllers/usuarios')
+const { Router } = require('express')
 const { check } = require('express-validator')
-const { validarCampos } = require('../middlewares/validar-campos')
+
+const { validarCampos, validarJWT, esAdminRole, tieneRole  } = require('../middlewares')
+
 const { esRoleValido, emailExiste, existeUsuarioPorId } = require('../helpers/db-validators')
+const { usuariosGet, usuariosPut, usuariosPost, usuariosDelete } = require('../controllers/usuarios')
 
 const router = Router()
 
@@ -26,6 +28,9 @@ router.post('/', [
 ], usuariosPost)
 
 router.delete('/:id',[
+  validarJWT,
+  // esAdminRole,
+  tieneRole('ADMIN_ROLE','VENTAS_ROLE'),
   check('id','No es un ID válido').isMongoId(), //id obtiene del segmento, no del parametro de la Schema
   check('id').custom( existeUsuarioPorId ),
   validarCampos
